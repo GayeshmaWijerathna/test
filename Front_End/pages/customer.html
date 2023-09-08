@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Manage</title>
+    <meta content="width=device-width initial-scale=1" name="viewport">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" rel="stylesheet">
+    <style>
+        ul > li {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<!--header-->
+<header class="jumbotron bg-primary text-white p-3">
+    <h1 class="position-absolute" id="nav"></h1>
+    <ul class="list-group list-group-horizontal text-danger justify-content-end font-weight-bold">
+        <li class="list-group-item bg-white" id="lnkHome"><a href="../index.html">Home</a></li>
+        <li class="list-group-item bg-danger text-white" id="lnkCustomer"><a class="text-white" href="customer.html">Customer</a>
+        </li>
+        <li class="list-group-item bg-white" id="lnkItem"><a href="item.html">Item</a></li>
+        <li class="list-group-item bg-white" id="lnkOrders"><a href="purchase-order.html">Orders</a></li>
+    </ul>
+</header>
+
+<!--customer content-->
+<main class="container-fluid" id="customerContent">
+    <section class="row">
+        <div class="col-12 col-lg-4">
+            <h1>Customer Registration</h1>
+            <form id="customerForm">
+            <div class="form-group">
+                <label for="txtCustomerID">Customer ID</label>
+                <input class="form-control" name="id" id="txtCustomerID" required type="text">
+                <span class="control-error" id="lblcusid"></span>
+            </div>
+            <div class="form-group">
+                <label for="txtCustomerName">Customer Name</label>
+                <input class="form-control" name="name" id="txtCustomerName" type="text">
+                <span class="control-error" id="lblcusname"></span>
+            </div>
+            <div class="form-group">
+                <label for="txtCustomerAddress">Customer Address</label>
+                <input class="form-control" name="address" id="txtCustomerAddress" type="text">
+                <span class="control-error" id="lblcusaddress"></span>
+            </div>
+            </form>
+            <!--            <div class="form-group">-->
+            <!--                <label for="txtCustomerSalary">Customer Salary</label>-->
+            <!--                <input class="form-control" id="txtCustomerSalary" type="text">-->
+            <!--                <span class="control-error" id="lblcussalary"></span>-->
+            <!--            </div>-->
+            <div class="btn-group">
+                <button class="btn btn-primary" name="saveCustomer" id="btnSaveCustomer">Save Customer</button>
+                <button class="btn btn-danger" name="deleteCustomer" id="btnCusDelete">Remove</button>
+                <button class="btn btn-warning" name="updateCustomer" id="btnUpdateCus">Update</button>
+                <button class="btn btn-success" name="getAllCustomer" id="btnGetAll">Get All</button>
+                <button class="btn btn-danger" name="clearAll" id="btn-clear1">Clear All</button>
+            </div>
+
+        </div>
+        <div class="col-12 col-lg-8 mt-3">
+            <table class="table table-bordered table-hover">
+                <thead class="bg-danger text-white">
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Customer Name</th>
+                    <th>Customer Address</th>
+                    <!--                    <th>Customer Salary</th>-->
+                </tr>
+                </thead>
+                <tbody id="tblCustomer">
+
+
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+
+<script src="../assets/js/jquery-3.6.1.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+
+<script>
+
+    getAll();
+
+    //Get All Method
+    function getAll() {
+        $("#tblCustomer").empty();
+        $.ajax({
+            url: "http://localhost:8080/Back_End1/pages/customer",
+
+            success: function (customer) {
+                for (let i in customer) {
+                    let cus = customer[i];
+                    let id = cus.id;
+                    let name = cus.name;
+                    let address = cus.address;
+
+                    console.log(id, name, address);
+
+                    let row = `<tr><td>${id}</td><td>${name}</td><td>${address}</td></tr>`;
+                    $("#tblCustomer").append(row);
+                }
+                bindRowClickOnAction();
+                clearRow("","","");
+            }
+
+        });
+    }
+
+    //Get All BTN
+    $("#btnGetAll").click(function () {
+
+        getAll();
+    });
+
+    //Save BTN
+    $("#btnSaveCustomer").click(function () {
+        let formData = $("#customerForm").serialize();
+        $.ajax({
+            url: "http://localhost:8080/Back_End1/pages/customer",
+            method: "post",
+            data: formData,
+            dataType: "json",
+            success: function (res) {
+                alert(res.message);
+                getAll();
+            },
+            error:function (error){
+                alert(JSON.parse(error.responseText).message);
+            }
+
+        });
+    });
+
+    //Remove BTN
+    $("#btnCusDelete").click(function (){
+
+        let id = $("#txtCustomerID").val();
+
+        $.ajax({
+            url : "http://localhost:8080/Back_End1/pages/customer?id="+id,
+            method :"delete",
+            success : function (res){
+                getAll();
+                alert(res.message);
+            }
+        });
+
+
+    });
+
+    //Update BTN
+    $("#btnUpdateCus").click(function (){
+
+        let cusID = $("#txtCustomerID").val();
+        let cusName = $("#txtCustomerName").val();
+        let cusAddress = $("#txtCustomerAddress").val();
+
+        var customerDB = {
+            id :cusID,
+            name : cusName,
+            address : cusAddress
+        }
+$.ajax({
+    url:"http://localhost:8080/Back_End1/pages/customer",
+    method: "put",
+    data : JSON.stringify(customerDB),
+    contentType : "application/json",
+
+    success:function (res){
+        getAll();
+
+        alert(res.message);
+
+    }
+});
+
+
+    });
+
+    //clear BTN
+    $("#btn-clear1").click(function () {
+        clearRow("","","");
+    });
+
+    //Data Bind with Text Fields
+    function bindRowClickOnAction() {
+        $("#tblCustomer>tr").click(function () {
+
+            let id = $(this).children(":eq(0)").text();
+            let name = $(this).children(":eq(1)").text();
+            let address = $(this).children(":eq(2)").text();
+
+            $("#txtCustomerID").val(id);
+            $("#txtCustomerName").val(name);
+            $("#txtCustomerAddress").val(address);
+
+        });
+
+    }
+
+    //Clear Text Fields
+    function clearRow(id,name,address){
+        $("#txtCustomerID").val(id);
+        $("#txtCustomerName").val(name);
+        $("#txtCustomerAddress").val(address);
+    }
+
+
+
+
+</script>
+</body>
+</html>

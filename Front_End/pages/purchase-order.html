@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Purchase Order Manage</title>
+    <meta content="width=device-width initial-scale=1" name="viewport">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" rel="stylesheet">
+    <style>
+        ul > li {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+<!--header-->
+<header class="jumbotron bg-primary text-white p-3">
+    <h1 class="position-absolute" id="nav"></h1>
+    <ul class="list-group list-group-horizontal text-danger justify-content-end font-weight-bold">
+        <li class="list-group-item bg-white" id="lnkHome"><a href="../index.html">Home</a></li>
+        <li class="list-group-item bg-white" id="lnkCustomer"><a href="customer.html">Customer</a></li>
+        <li class="list-group-item bg-white" id="lnkItem"><a  href="item.html">Item</a></li>
+        <li class="list-group-item bg-danger text-white" id="lnkOrders"><a class="text-white" href="purchase-order.html">Orders</a></li>
+    </ul>
+</header>
+
+<!--order form-->
+<main class="container-fluid" id="orderContent">
+    <div class="container-fluid mt-4">
+        <!--main tile-->
+        <div class="jumbotron pt-4">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header bg-primary font-weight-bolder">Invoice Details</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Order ID :</label>
+                                            <input class="form-control" id="txtOrderID" type="text">
+                                            <span class="control-error"
+                                                  id="orderId-invalid-error"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Date :</label>
+                                            <input class="form-control" id="txtDate" type="date">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Customer :</label>
+                                            <select class="form-control" id="selectCusID"></select>
+<!--                                                <option value="1">A</option>-->
+<!--                                                <option value="2">B</option>-->
+
+                                            <span class="control-error"
+                                                  id="cus-empty-error"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="orderCustomerID">Customer ID</label>
+                                            <input class="form-control" id="orderCustomerID">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Name :</label>
+                                            <input class="form-control" id="orderCustomerName" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Salary :</label>
+                                            <input class="form-control" id="orderCustomerSalary" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Address :</label>
+                                            <input class="form-control" id="orderCustomerAddress" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 mt-lg-0 mt-3">
+                    <div class="card">
+                        <div class="card-header bg-primary  font-weight-bolder">Item Select</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Item :</label>
+                                            <select class="form-control" id="selectItemCode"></select>
+                                            <span class="control-error"
+                                                  id="item-empty-error"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Item Code :</label>
+                                            <input class="form-control" id="txtItemCode" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="form-group">
+                                            <label>Item Name :</label>
+                                            <input class="form-control" id="txtItemDescription" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label class="">Price :</label>
+                                            <input class="form-control" id="txtItemPrice" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label class="">QtyOnH :</label>
+                                            <input class="form-control" id="txtQTYOnHand" type="text">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <hr>
+                                    <div class="col-12 mt-4">
+                                        <div class="form-group">
+                                            <label>Order Quantity :</label>
+                                            <input class="form-control" id="txtQty" min="1" type="number">
+                                            <span class="control-error" id="order-qty-empty-error"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group text-right">
+                                    <button class="btn btn-danger col-12 col-sm-auto" id="btnAddToTable" type="button">
+                                        Add Item
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <section class="content-box-2 p-4 ">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="" id="total-text">Total : </span>
+                                    </div>
+                                    <div class="col-12">
+                                        <span id="total">00.0</span> Rs/=
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span id="total-text1">SubTotal : </span>
+                                    </div>
+                                    <div class="col-12">
+                                        <span id="subtotal">00.0</span> Rs/=
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-6 mt-2">
+                                <div class="form-group">
+                                    <label>Cash</label>
+                                    <input class="form-control" id="txtCash" min="0" type="number">
+                                    <span class="control-error"
+                                          id="cash-empty-error"></span>
+                                </div>
+                            </div>
+                            <div class="col-6 mt-2">
+                                <div class="form-group">
+                                    <label>Discount</label>
+                                    <input class="form-control" id="txtDiscount" min="0" type="number">
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <label>Balance</label>
+                                    <input class="form-control" id="txtBalance" type="text">
+                                </div>
+                            </div>
+                            <div class="col-4 mt-4">
+                                <button class="btn btn-success" id="btnSubmitOrder" type="button">Purchase</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!--order table-->
+            <div class="col-md-12 mt-4" style="height:180px; overflow-y: scroll">
+                <table class="table table-bordered text-white">
+                    <thead class="bg-primary">
+                    <tr>
+                        <th>Item Code</th>
+                        <th>Item Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-light text-dark" id="orderTable">
+
+                    </tbody>
+                </table>
+            </div>
+            <!---------->
+        </div>
+    </div>
+</main>
+
+
+<script src="../assets/js/jquery-3.7.0.min.js"></script>
+
+<script>
+
+
+    /*
+        getAll();
+
+        // <!--    Load All Items  -->
+        function getAll() {
+            $("#selectCusID").empty();
+            $.ajax({
+                url: "http://localhost:8080/posNew/pages/customer?id=",
+                success: function (cus) {
+                    console.log(cus);
+                    for (let j in cus) {
+                        let customer = cus[j];
+                        let inputs = `<option>${customer.id}  ${customer.name}</option>`;
+                        $("#selectCusID").append(inputs);
+
+                        let id = $(this).children(" ").text();
+                        let name = $(this).children(" ").text();
+                        let address = $(this).children(" ").text();
+
+                        $("#orderCustomerID").val(id);
+                        $("#orderCustomerName").val(name);
+                        $("#orderCustomerAddress").val(address);
+                        $("#orderCustomerSalary").val("N/A");
+
+                    }
+                    // bindRowClickOnAction();
+                    // clearRow("", "", "");
+                },
+                error:function (error){
+                    console.log(error)
+                }
+            });
+
+
+
+        }
+
+
+      /!*  function bindRowClickOnAction() {
+            $("#selectCusID").click(function () {
+
+                let id = $(this).children(":eq(0)").text();
+                let name = $(this).children(":eq(1)").text();
+                let address = $(this).children(":eq(2)").text();
+
+                $("#orderCustomerID").val(id);
+                $("#orderCustomerName").val(name);
+                $("#orderCustomerAddress").val(address);
+                $("#orderCustomerSalary").val("N/A");
+
+            });
+
+        }*!/*/
+
+    $(document).ready(function() {
+        loadItemCode();
+        loadCusCode();
+
+
+    });
+
+
+    function loadItemCode() {
+        $("#selectItemCode").empty();
+        let code = $("#selectItemCode").val();
+        $.ajax({
+            url: 'http://localhost:8080/Back_End1/pages/item?code'+ code,
+            success: function (res) {
+                // console.log(res);
+                for (let item of res) {
+                    // console.log(item.code);
+                    let id = `<option>${item.code}</option>`;
+                    $("#selectItemCode").append(id);
+                }
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+
+    }
+
+    $("#selectItemCode").click(
+        function fetchItemDetails() {
+            let id = $("#selectItemCode").val();
+            $.ajax({
+                url: 'http://localhost:8080/Back_End1/pages/purchase-order?option=item&code='+ id,
+                // data: { code: itemCode },
+                success: function(res) {
+
+
+                    $("#txtItemCode").val(res.code);
+                    $("#txtItemDescription").val(res.description);
+                    $("#txtItemPrice").val(res.unitPrice);
+                    $("#txtQTYOnHand").val(res.qtyOnHand);
+
+
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        }
+    );
+
+    function loadCusCode() {
+        $("#selectCusID").empty();
+        let id = $("#selectCusID").val();
+        $.ajax({
+            url: 'http://localhost:8080/Back_End1/pages/customer?id ='+id,
+            success: function (res) {
+                console.log(res);
+                for (let cus of res) {
+                    console.log(cus.id);
+                    let id = `<option>${cus.id}</option>`;
+                    $("#selectCusID").append(id);
+                }
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+    }
+
+    $("#selectCusID").click(
+
+        function fetchCusDetails() {
+            let id = $("#selectCusID").val();
+            $.ajax({
+                url: 'http://localhost:8080/Back_End1/pages/purchase-order?option=customer&id='+ id,
+                // data:  { cusId: selectedId },
+                success: function(res) {
+
+                    $("#orderCustomerID").val(res.id);
+                    $("#orderCustomerName").val(res.name);
+                    $("#orderCustomerAddress").val(res.address);
+                    $("#orderCustomerSalary").val("N/A");
+
+
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        }
+    );
+
+
+
+
+    const currentDate = new Date();
+
+    // Format the current date as yyyy-MM-dd
+    const formattedDate = formatDate(currentDate);
+
+    $('#txtDate').val(formattedDate);
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    let orderItems= [];
+
+    $("#btnAddToTable").click(function() {
+        let itemCode = $("#txtItemCode").val();
+        let itemName = $("#txtItemDescription").val();
+        let price = parseFloat($("#txtItemPrice").val());
+        let quantity = parseInt($("#txtQty").val());
+
+        let total = price * quantity;
+
+        orderItems.push({
+            code: itemCode,
+            description: itemName,
+            unitPrice: price,
+            quantity: quantity,
+            total: total
+        });
+
+        $("#orderCustomerID").val("");
+        $("#orderCustomerName").val("");
+        $("#orderCustomerAddress").val("");
+        $("#txtItemCode").val("");
+        $("#txtItemDescription").val("");
+        $("#txtItemPrice").val("");
+        $("#txtQTYOnHand").val("");
+        $("#txtQty").val("");
+
+        updateOrderTable();
+
+        updateTotals();
+    });
+
+
+    function updateOrderTable() {
+        let tableBody = $("#orderTable");
+        tableBody.empty();
+
+        for (let item of orderItems) {
+            let row = `<tr>
+            <td>${item.code}</td>
+            <td>${item.description}</td>
+            <td>${item.unitPrice}</td>
+            <td>${item.quantity}</td>
+            <td>${item.total}</td>
+        </tr>`;
+            tableBody.append(row);
+        }
+    }
+
+    function updateTotals() {
+        let totalAmount = 0;
+
+        for (let item of orderItems) {
+            totalAmount += item.total;
+        }
+
+        let subtotalAmount = totalAmount;
+        let cashAmount = parseFloat($("#txtCash").val()) || 0;
+        let discountAmount = parseFloat($("#txtDiscount").val()) || 0;
+
+        let balanceAmount = cashAmount - discountAmount - subtotalAmount;
+
+        $("#total").text(totalAmount.toFixed(2));
+        $("#subtotal").text(subtotalAmount.toFixed(2));
+        $("#txtBalance").val(balanceAmount.toFixed(2));
+    }
+
+    /*
+    $("#btnAddToTable").click(function () {
+        let formData = $("#formData").serialize();
+        $.ajax({
+            url:"http://localhost:8080/posNew/pages/purchase-order",
+            method: "post",
+            data: formData,
+            dataType:"json",
+            success: function (res) {
+                alert(res.message);
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+    });*/
+
+    $("#btnAddToTable").click(function() {
+        let itemCode = $("#txtItemCode").val();
+        let itemName = $("#txtItemDescription").val();
+        let price = parseFloat($("#txtItemPrice").val());
+        let quantity = parseInt($("#txtQty").val());
+
+        let total = price * quantity;
+
+        orderItems.push({
+            code: itemCode,
+            description: itemName,
+            unitPrice: price,
+            quantity: quantity,
+            total: total
+        });
+
+        $("#orderCustomerID").val("");
+        $("#orderCustomerName").val("");
+        $("#orderCustomerAddress").val("");
+        $("#txtItemCode").val("");
+        $("#txtItemDescription").val("");
+        $("#txtItemPrice").val("");
+        $("#txtQTYOnHand").val("");
+        $("#txtQty").val("");
+
+        updateOrderTable();
+
+        updateTotals();
+    });
+
+    let orderDeatils;
+    function updateOrderTable() {
+        let tableBody = $("#orderTable");
+        tableBody.empty();
+
+        for (let item of orderItems) {
+            let row = `<tr>
+            <td>${item.code}</td>
+            <td>${item.description}</td>
+            <td>${item.unitPrice}</td>
+            <td>${item.quantity}</td>
+            <td>${item.total}</td>
+        </tr>`;
+            tableBody.append(row);
+        }
+    }
+
+    let disTOGave = 0;
+
+    $('#txtDiscount').on('keyup', function() {
+        let dis = parseFloat($('#txtDiscount').val());
+        let tot = parseFloat($('#txtBalance').val());
+
+        console.log(dis + "==" + tot);
+
+        let totMin = tot * (dis / 100);
+        console.log("Discount Amount: " + totMin);
+
+        let subTot = tot - totMin;
+        disTOGave = totMin;
+
+        $('#subtotal').val(subTot);
+        updateTotals();
+    });
+
+
+    /*
+    $("#btnSubmitOrder").click(function (){
+
+        $.ajax({
+            url:"http://localhost:8080/posNew/pages/purchase-order",
+            method: "post",
+            // data: formData,
+            dataType:"json",
+            success: function (res) {
+                alert(res.message);
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+
+
+    });*/
+
+
+    $("#btnSubmitOrder").click(function () {
+        let oid = $("#txtOrderID").val();
+        let date=   $("#txtDate").val();
+        let odCusId=  $("#orderCustomerID").val();
+
+        let odDetail=orderDeatils;
+
+        let or={
+            "oid":oid,
+            "date":date,
+            "odCusId":odCusId,
+            "odDetail":odDetail
+        }
+
+        $.ajax({
+            url:"http://localhost:8080/Back_End1/pages/purchase-order",
+            method: "post",
+            data: JSON.stringify(or),
+            contentType: "application/json",
+            dataType:"json",
+
+            success: function (res) {
+                alert(res.message);
+
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+    });
+
+</script>
+
+
+
+
+</body>
+</html>
