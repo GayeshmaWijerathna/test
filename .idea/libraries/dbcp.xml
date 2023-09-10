@@ -1,10 +1,10 @@
 <component name="libraryTable">
   <library name="dbcp">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/Back_End/src/lk.ijse.api/lib/dbcp" />
+      <root url="file://$PROJECT_DIR$/Back_End/src/lk/ijse/api/lib/dbcp" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
-    <jarDirectory url="file://$PROJECT_DIR$/Back_End/src/lk.ijse.api/lib/dbcp" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/Back_End/src/lk/ijse/api/lib/dbcp" recursive="false" />
   </library>
 </component>
